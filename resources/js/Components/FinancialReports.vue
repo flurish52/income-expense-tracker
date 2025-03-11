@@ -5,23 +5,27 @@
                 <h3 class="text-xl font-bold text-black">Total balance</h3>
 
                 <div class="flex flex-col">
-                <button
-                    class="rounded-md text-gray-500 mt-2 font-bold text-white  py-2 w-full bg-blue-500">Add Expense
-                </button>
+                <input
+                    v-model="transactionType.expense"
+                    readonly
+                    @click="addTransaction(selectedBusiness, transactionType.expense)"
+                    class="cursor-pointer rounded-md text-gray-500 mt-2 font-bold text-white  py-2 w-full bg-blue-500 text-center border-0 focus:outline-none">
 
                     <div
                     class="flex bg-gray-200 py-1 w-fit my-2 rounded-md">
                         <input
-                            v-for="card in cards"
+                            v-for="business in businesses"
                             type="button"
-                            :value="card.title"
-                            @click="activateButton(card)"
+                            :value="business.name"
+                            @click="selectBusiness(business)"
                             :class="['w-32 p-1 mx-1  cursor-pointer rounded-md ',
-                            card.active? ' bg-white text-gray-800': 'bg-gray-300 text-gray-500 border-2' ]">
+                            business.active? ' bg-white text-gray-800': 'bg-gray-300 text-gray-500 border-2' ]">
                     </div>
-                <button
-                    class="rounded-md text-gray-500 mt-2 font-bold text-white  py-2 w-full bg-blue-500">Add income
-                </button>
+                <input
+                    v-model="transactionType.income"
+                    readonly
+                    @click="addTransaction(selectedBusiness, transactionType.income)"
+                    class="cursor-pointer rounded-md text-gray-500 mt-2 font-bold text-white  py-2 w-full bg-blue-500 text-center border-0 focus:outline-none">
 
                 </div>
             </div>
@@ -31,20 +35,33 @@
 
 <script setup>
 import {ref} from "vue";
-let  cards = ref([
-    { id: 1, title: 'Academy', active: true},
-    { id: 2, title: 'Energy Reserve', active: false},
-    { id: 3, title: 'MonieDirect', active: false},
-    { id: 4, title: 'MonieDirect', active: false}
-]);
+let props = defineProps({
+    businesses:Array
+})
 
+let selectedBusiness = ref('')
+let transactionType = ref({
+    income: 'Income',
+    expense: 'Expense',
+})
+let type = ref('')
+let emits =defineEmits(['addTransaction'])
 
-let activateButton =(button)=>{
-    cards.value.forEach(card =>{
+let selectBusiness = (business)=>{
+    props.businesses.forEach(card =>{
         card.active = false
     })
+    business.active = true
+    selectedBusiness.value = business
+}
 
-    button.active = true
+let addTransaction = (selectedBusiness, transaction)=>{
+    if (selectedBusiness === '' || selectedBusiness === undefined){
+        alert('Please select a business')
+        return
+    }
+
+    emits('addTransaction', selectedBusiness, transaction)
 }
 
 </script>
