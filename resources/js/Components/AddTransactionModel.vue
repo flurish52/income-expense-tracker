@@ -1,12 +1,12 @@
 <template>
     <div class="bg-white shadow-lg rounded-2xl p-6 max-w-lg mx-auto">
-        <h2 class="text-3xl font-semibold text-center mb-6 text-gray-900">Add Transaction</h2>
+        <h2 class="text-3xl font-semibold text-center mb-6 text-gray-900">Add {{ typeOftransaction }}</h2>
 
         <form @submit.prevent="submit" class="space-y-4">
             <!-- Business Selection -->
-            <div>
-                <label for="amount" class="block text-gray-700 font-medium mb-1">Adding transaction to:</label>
-                <div class="w-full p-3 border border-gray-300 rounded-lg bg-gray-100 text-gray-800">{{ business.name }}</div>
+            <div class="text-xs text-center py-3 flex flex-col items-center justify-center">
+                <label for="amount" class="block text-gray-700 font-medium">Adding transaction to:</label>
+                <div class=" rounded-lg text-gray-800 bg-gray-100 w-fit px-3">{{ business.name }}</div>
             </div>
 
             <!-- Category Selection -->
@@ -35,17 +35,11 @@
                        class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
             </div>
 
-            <!-- Date of Transaction -->
-            <div>
-                <label for="updated_at" class="block text-gray-700 font-medium mb-1">Date of Transaction</label>
-                <input type="date" v-model="form.date_of_transaction" id="updated_at" required
-                       class="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:outline-none">
-            </div>
 
             <!-- Submit Button -->
             <button type="submit"
                     class="w-full bg-blue-600 text-white py-3 px-4 rounded-lg hover:bg-blue-700 transition font-semibold">
-                Save Transaction
+                Save {{ typeOftransaction }}
             </button>
         </form>
     </div>
@@ -70,7 +64,6 @@ const form = useForm({
     category_id: "",
     description: "",
     amount: "",
-    date_of_transaction: "",
 });
 
 
@@ -79,12 +72,11 @@ let emit = defineEmits(['closDialogue'])
 const submit = () => {
     form.business_id = props.business.id
     form.type = props.typeOftransaction
-    console.log(form.business_id)
     form.post("add-new-transaction", {
         onSuccess: () => {
-            alert("Transaction saved successfully!");
             form.reset();
             emit('closDialogue')
+            alert("Transaction saved successfully!");
         },
     });
 };

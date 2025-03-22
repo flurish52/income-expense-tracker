@@ -23,7 +23,9 @@
                 <Link href="/" class="sidebar-link">Dashboard</Link>
                 <Link href="/manage-businesses" class="sidebar-link">Manage Businesses</Link>
                 <Link href="/new-business" class="sidebar-link">Add Business</Link>
-                <button class="text-red-600 font-medium mt-auto hover:underline">Sign Out</button>
+                <button
+                    @click="logOut"
+                    class="text-red-600 font-medium mt-auto hover:underline">Sign Out</button>
             </nav>
         </div>
 
@@ -54,6 +56,10 @@ const fetchCategories = () => {
 const toggleCategoryModel = () => {
     fetchCategories()
     isVisible.value = !isVisible.value
+}
+
+const logOut = () => {
+axios.post('logout')
 }
 const toggleSidebar = () => {
     sidebarVisible.value = !sidebarVisible.value;

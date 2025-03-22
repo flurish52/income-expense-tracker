@@ -21,15 +21,12 @@
 <script setup>
 import {onMounted, ref} from "vue";
 import axios from "axios";
-let dailyTransactions =ref('')
 
-onMounted(()=>{
-    axios.get('/daily-business-transactions')
-        .then(response =>{
-            dailyTransactions.value =  response.data
-        })
+let props = defineProps({
+    sentDailyTransactions: Array
 })
-
+let dailyTransactions = ref()
+ dailyTransactions.value = props.sentDailyTransactions
 
 </script>
 

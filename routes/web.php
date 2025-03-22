@@ -34,7 +34,7 @@ Route::get('/', function () {
         'categories' => Categories::orderBy('name', 'DESC')->get(),
         'transactions' => Transaction::orderBy('date_of_transaction', 'DESC')->with('category', 'business')->get(),
     ]);
-})->middleware(['auth', 'verified'])->name('dashboard');
+})->middleware(['auth', 'verified'])->name('welcome');
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -50,6 +50,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/daily-business-transactions', [TransactionController::class, 'dailyTransactions']);
     Route::get('/fetch-business-financials', [TransactionController::class, 'fetchFinancials']);
     Route::get('/business-total-balance', [TransactionController::class, 'totalBusinessBalance']);
+    Route::get('edit-category/{id}', [CategoriesController::class, 'editCategory']);
 });
 
 require __DIR__.'/auth.php';

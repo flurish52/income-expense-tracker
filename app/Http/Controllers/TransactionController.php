@@ -22,7 +22,7 @@ class TransactionController extends Controller
     {
        $total_Income = Transaction::where('type', 'Income')->sum('amount');
        $total_Expense = Transaction::where('type', 'Expense')->sum('amount');
-       $total_balance = $total_Income - $total_Expense;
+       $total_balance =  $total_Income - $total_Expense;
 
        return response()->json($total_balance);
 
@@ -83,14 +83,11 @@ class TransactionController extends Controller
             "description" => "required|string|max:1000",
             "type" => "required|string|max:1000",
             "amount" => "required|numeric|min:0",
-            "date_of_transaction" => "required|date",
+//            "date_of_transaction" => "required|date",
         ]);
 
-        $today = Carbon::now()->toDateString();
+        $validatedData['date_of_transaction'] = Carbon::now()->toDateString();
 
-        if ($validatedData['date_of_transaction'] > $today){
-            return response()->json(['message'=> 'Invalid transaction date'], 422);
-        }
         Transaction::create($validatedData);
     }
 

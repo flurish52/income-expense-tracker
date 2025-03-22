@@ -28,19 +28,26 @@
                     :key="index"
                     class="p-2 text-gray-700 border-b last:border-b-0 flex justify-between items-center hover:bg-gray-100 transition"
                 >
-                    <span class="font-medium">{{ category.name }}</span>
+                    <input :class="[`font-medium bg-transparent border-0 focus:outline-none focus:ring-0`,
+                     editing? '' : 'focus:bg-gray-200'
+                    ]"
+                           type="text" v-model="category.name"
+                            :readonly="editing"
+                           @onblur="stopEditing(category.id, category.name)"
+
+                    >
 
                     <div class="space-x-2">
                         <!-- Edit Button (Green) -->
                         <button
-                            @click="editCategory(category.id)"
+                            @click="editCategory(category.id, category.name)"
                             class="bg-green-500 text-white px-1 py-px rounded-md shadow hover:bg-green-600 transition">
                             Edit
                         </button>
 
                         <!-- Delete Button (Red) -->
                         <button
-                            @click="deleteCategory(category.id)"
+                            @click="deleteCategory(category.id, category.name)"
                             class="bg-red-500 text-white px-1 py-px rounded-md shadow hover:bg-red-600 transition">
                             Delete
                         </button>
@@ -56,9 +63,11 @@
 <script setup>
 
 import {useForm} from "@inertiajs/vue3";
-import {ref} from "vue";
+import {readonly, ref} from "vue";
+import axios from "axios";
 
 
+let editing = ref(true)
 let name = ref('')
 defineProps({
     categories: Array,
@@ -68,6 +77,34 @@ let emit = defineEmits(['submit']);
 let submit = () => {
     emit('submit', name.value);
 };
+let deleteCategory = (categoryId, categoryName) => {
+    if (confirm(`Are you sure you want to delete ${categoryName}`)) {
+
+    } else {
+
+    }
+};
+let editCategory = (categoryId, categoryName) => {
+    console.log(categoryName)
+    if (confirm(`Are you sure you want to Edit ${categoryName}`)) {
+
+        editing.value = !editing.value
+    } else {
+        editing.value = !editing.value
+
+    }
+};
+
+let stopEditing = (categoryId, categoryName)=>{
+    console.log(categoryId)
+    axios.post(`edit-category/${categoryId}`, {categoryName})
+        .then(res =>{
+            if (res.status === 200){
+                editing.value = false
+            }
+        })
+
+}
 
 
 

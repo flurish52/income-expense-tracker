@@ -2,17 +2,14 @@
     <section class="my-3 border-b-2 p-3 rounded-md w-full">
         <div class="w-full">
             <div class="bg-white shadow-lg rounded-2xl p-6 w-full border border-gray-200">
-                <h3 class="text-xl font-bold text-black">Total balance</h3>
-
                 <div class="flex flex-col">
                 <input
                     v-model="transactionType.expense"
                     readonly
                     @click="addTransaction(selectedBusiness, transactionType.expense)"
                     class="cursor-pointer rounded-md text-gray-500 mt-2 font-bold text-white  py-2 w-full bg-blue-500 text-center border-0 focus:outline-none">
-
                     <div
-                    class="flex bg-gray-200 py-1 w-fit my-2 rounded-md">
+                    class="flex flex-wrap bg-gray-200 py-1 w-fit my-2 rounded-md">
                         <input
                             v-for="business in businesses"
                             type="button"
@@ -60,7 +57,6 @@ let addTransaction = (selectedBusiness, transaction)=>{
         alert('Please select a business')
         return
     }
-
     emits('addTransaction', selectedBusiness, transaction)
 }
 

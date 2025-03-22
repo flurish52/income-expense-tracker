@@ -17,6 +17,12 @@ class CategoriesController extends Controller
         return Categories::orderBy('name', 'ASC')->get();
     }
 
+
+    public function editCategory(Categories $id)
+    {
+       dd($id);
+    }
+
     /**
      * Show the form for creating a new resource.
      */
